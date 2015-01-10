@@ -217,7 +217,7 @@ class Eggy(bot.SimpleBot):
         if self.last_ping_time <= self.last_pong_time:
             # Time to send PING?
             if time_since_ping > 5:
-                self.execute("PING", self.event_count)
+                self.execute("PING", trailing=str(self.event_count))
                 self.last_ping_time = now
         else:
             # PING timed out?
