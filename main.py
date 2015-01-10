@@ -1,6 +1,7 @@
 from eggy.eggy import Eggy
 from eggy import settings
 import asyncore
+import traceback
 
 
 if __name__ == "__main__":
@@ -14,6 +15,6 @@ if __name__ == "__main__":
                 bot.inactive()
     except KeyboardInterrupt:
         bot.logger.error("Keyboard interrupt")
-    except Exception as exn:
-        bot.logger.error("Unhandled exception "+str(type(exn)))
-        bot.logger.error(str(exn))
+    except:
+        bot.logger.error(traceback.format_exc())
+        traceback.print_exc()
