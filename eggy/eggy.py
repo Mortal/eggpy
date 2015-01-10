@@ -214,8 +214,6 @@ class Eggy(bot.SimpleBot):
             return
         now = time.time()
         time_since_ping = now - self.last_ping_time
-        print("ping=%r pong=%r elapsed=%r now=%r" %
-              (self.last_ping_time, self.last_pong_time, time_since_ping, now))
         if self.last_ping_time <= self.last_pong_time:
             # Time to send PING?
             if time_since_ping > 5:
