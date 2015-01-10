@@ -206,7 +206,7 @@ class Eggy(bot.SimpleBot):
         self.event_count += 1
         if command == 'PONG':
             self.last_pong_time = time.time()
-        super(self, Eggy)._dispatch_event(prefix, command, params)
+        super(Eggy, self)._dispatch_event(prefix, command, params)
 
     def inactive(self):
         # Called when nothing is happening
