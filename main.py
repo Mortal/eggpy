@@ -10,7 +10,7 @@ if __name__ == "__main__":
     try:
         while asyncore.socket_map:
             prev_count = bot.event_count
-            asyncore.poll(1)
+            asyncore.poll(30)
             if bot.event_count == prev_count:
                 bot.inactive()
     except KeyboardInterrupt:

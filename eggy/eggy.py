@@ -216,12 +216,12 @@ class Eggy(bot.SimpleBot):
         time_since_ping = now - self.last_ping_time
         if self.last_ping_time <= self.last_pong_time:
             # Time to send PING?
-            if time_since_ping > 5:
+            if time_since_ping > 15:
                 self.execute("PING", trailing=str(self.event_count))
                 self.last_ping_time = now
         else:
             # PING timed out?
-            if time_since_ping > 5:
+            if time_since_ping > 15:
                 self.disconnect("PING timeout")
 
     def on_message(self, bot, event):
