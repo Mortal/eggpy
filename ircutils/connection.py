@@ -5,6 +5,7 @@ connections.
 """
 import asyncore, asynchat
 import socket
+import sys
 
 try:
     import ssl
@@ -85,7 +86,9 @@ class Connection(asynchat.async_chat):
             params = list(params)
             if kwargs["trailing"] is not None:
                 params.append(":%s" % kwargs["trailing"])
-        self.push(("%s %s\r\n" % (command.upper(), " ".join(params))).encode())
+        output = ("%s %s\r\n" % (command.upper(), " ".join(params)))
+        sys.stdout.write(output)
+        self.push(output.encode())
     
     
     def handle_error(self):
