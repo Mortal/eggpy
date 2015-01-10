@@ -165,6 +165,12 @@ class Eggy(bot.SimpleBot):
         self.message_handlers = ()
         self.topics = {}
         self.messages_to_relay = {}
+        self.event_count = 0
+
+        # Last time we sent a PING to the server
+        self.last_ping_time = 0
+        # Last time we received a PONG from the server
+        self.last_pong_time = 0
 
         # Load modules.
         self.paths = Paths(self)
@@ -193,6 +199,28 @@ class Eggy(bot.SimpleBot):
         self.events["reply"].add_handler(self.on_reply)
         self.events["any"].add_handler(self.on_any)
         self.events["join"].add_handler(self.on_join)
+
+    def _dispatch_event(self, prefix, command, params):
+        self.event_count += 1
+        if command == 'PONG':
+            self.last_pong_time = time.time()
+        super(self, Eggy)._dispatch_event(prefix, command, params)
+
+    def inactive(self):
+        # Called when nothing is happening
+        now = time.time()
+        time_since_ping = now - self.last_ping_time
+        print("ping=%r pong=%r elapsed=%r now=%r" %
+              (self.last_ping_time, self.last_pong_time, time_since_ping, now))
+        if self.last_ping_time <= self.last_pong_time:
+            # Time to send PING?
+            if time_since_ping > 5:
+                self.execute("PING", self.event_count)
+                self.last_ping_time = now
+        else:
+            # PING timed out?
+            if time_since_ping > 5:
+                self.disconnect("PING timeout")
 
     def on_message(self, bot, event):
         for (command, handler) in self.commands:
