@@ -167,6 +167,7 @@ class Eggy(bot.SimpleBot):
         self.topics = {}
         self.messages_to_relay = {}
         self.event_count = 0
+        self.welcomed = False
 
         # Last time we sent a PING to the server
         self.last_ping_time = 0
@@ -209,6 +210,8 @@ class Eggy(bot.SimpleBot):
 
     def inactive(self):
         # Called when nothing is happening
+        if not self.welcomed:
+            return
         now = time.time()
         time_since_ping = now - self.last_ping_time
         print("ping=%r pong=%r elapsed=%r now=%r" %
@@ -284,6 +287,7 @@ class Eggy(bot.SimpleBot):
         self.logger.on_bot_message(target, line)
 
     def on_welcome(self, bot, event):
+        self.welcomed = True
         self.join_channel(settings.CHANNEL)
 
     def change_topic(self, target, topic):
