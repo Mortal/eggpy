@@ -4,6 +4,7 @@ import re
 import time
 import os
 import codecs
+import sys
 
 from . import settings
 from . import commands
@@ -75,7 +76,7 @@ class Logger:
         if target:
             prefix += target+' '
         line = prefix+line
-        print(line.encode('utf-8'))
+        sys.stdout.write(line+'\n')
         self.maintarget.write_line(line, now)
         if target:
             self.get_channel(target).write_line(line, now)
